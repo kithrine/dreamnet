@@ -23,7 +23,7 @@ async function getDream(id: string) {
               replies: {
                 include: {
                   user: { select: { username: true, avatarId: true } },
-                  replies: { include: { user: { select: { username: true, avatarId: true } }, replies: [] } },
+                  replies: { include: { user: { select: { username: true, avatarId: true } } } },
                 },
               },
             },
