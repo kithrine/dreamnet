@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import Avatar from "@/components/ui/Avatar";
+import UserDropdown from "@/components/layout/UserDropdown";
 import Link from "next/link";
 
 export default async function TopBar() {
@@ -50,21 +50,8 @@ export default async function TopBar() {
         </svg>
       </Link>
 
-      {/* Avatar + dropdown chevron → links to profile */}
-      <Link
-        href={`/profile/${username}`}
-        className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
-      >
-        <Avatar avatarId={avatarId} className="w-8 h-8" />
-        <svg
-          className="w-4 h-4 text-dream-muted"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
-      </Link>
+      {/* Avatar + dropdown */}
+      <UserDropdown username={username} avatarId={avatarId} />
     </div>
   );
 }
