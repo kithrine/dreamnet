@@ -51,7 +51,7 @@ export default function DreamCard({ dream, rank }: DreamCardProps) {
         )}
 
         {/* Thumbnail */}
-        <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${gradient} flex-shrink-0`} />
+        <div className={`w-20 h-16 rounded-xl bg-gradient-to-br ${gradient} flex-shrink-0`} />
 
         {/* Info */}
         <div className="flex-1 min-w-0">
