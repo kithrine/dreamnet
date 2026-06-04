@@ -136,7 +136,9 @@ const builders: Record<string, Builder> = {
     const head = ball(0.34, M(0xf0d9b5));
     head.position.y = 1.55;
     g.add(head);
-    addEyes(g, 1.6, 0.28, 0.12, 0.07);
+    // eyes: pushed forward to z=0.32 (near the head's front surface) and slightly larger
+    // so they read clearly on the face and aren't hidden by the head/beard
+    addEyes(g, 1.62, 0.32, 0.13, 0.085);
     const beard = new THREE.Mesh(new THREE.ConeGeometry(0.26, 0.5, 12), M(0xeeeef5));
     beard.position.set(0, 1.32, 0.18);
     beard.rotation.x = 0.2;
