@@ -23,8 +23,10 @@ export default function AvatarPicker({ selected, onChange }: AvatarPickerProps) 
           type="button"
           onClick={() => onChange(avatar.id)}
           className={cn(
-            "w-12 h-12 rounded pixel-border transition-all",
-            selected === avatar.id ? "ring-2 ring-dream-gold scale-110" : "opacity-60 hover:opacity-100"
+            "w-12 h-12 rounded-full transition-all",
+            selected === avatar.id
+              ? "ring-2 ring-dream-gold ring-offset-2 ring-offset-dream-surface scale-110"
+              : "opacity-60 hover:opacity-90 hover:scale-105"
           )}
           style={{ backgroundColor: avatar.color }}
           title={avatar.label}
