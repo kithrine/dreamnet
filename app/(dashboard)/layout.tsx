@@ -1,15 +1,20 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { prisma } from "@/lib/prisma";
 import Sidenav from "@/components/layout/Sidenav";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/auth/signin");
 
+  const commentCount = await prisma.comment.count({
+    where: { userId: session.user.id },
+  });
+
   return (
     <div className="flex min-h-screen bg-dream-bg">
-      <Sidenav session={session} />
+      <Sidenav session={session} commentCount={commentCount} />
       <main
         className="flex-1 ml-64 min-h-screen relative"
         style={{
