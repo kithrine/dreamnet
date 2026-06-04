@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  avatarId     Int      @default(1)
+  totalStars   Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  dreams        Dream[]
+  ratings       Rating[]
+  comments      Comment[]
+  notifications Notification[]
+  starTxns      StarTransaction[]
+}
+
+model Dream {
+  id            String   @id @default(cuid())
+  title         String
+  content       String   @db.Text
+  userId        String
+  averageRating Float    @default(0)
+  ratingCount   Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tags          DreamTag[]
+  ratings       Rating[]
+  comments      Comment[]
+  featuredAs    FeaturedDream[]
+  notifications Notification[]
+}
+
+model Tag {
+  id     String     @id @default(cuid())
+  name   String     @unique
+  dreams DreamTag[]
+}
+
+model DreamTag {
+  dreamId String
+  tagId   String
+  dream   Dream  @relation(fields: [dreamId], references: [id], onDelete: Cascade)
+  tag     Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([dreamId, tagId])
+}
+
+model Rating {
+  id        String   @id @default(cuid())
+  value     Int
+  userId    String
+  dreamId   String
+  createdAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dream Dream @relation(fields: [dreamId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, dreamId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  userId    String
+  dreamId   String
+  parentId  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dream   Dream     @relation(fields: [dreamId], references: [id], onDelete: Cascade)
+  parent  Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies Comment[] @relation("CommentReplies")
+}
+
+model StarTransaction {
+  id        String     @id @default(cuid())
+  userId    String
+  amount    Int
+  reason    StarReason
+  createdAt DateTime   @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum StarReason {
+  POST_DREAM
+  RECEIVE_RATING
+  LEAVE_COMMENT
+  RECEIVE_REPLY
+}
+
+model FeaturedDream {
+  id        String   @id @default(cuid())
+  dreamId   String
+  date      String   @unique
+  createdAt DateTime @default(now())
+
+  dream Dream @relation(fields: [dreamId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id             String           @id @default(cuid())
+  userId         String
+  type           NotificationType
+  relatedDreamId String?
+  relatedUserId  String?
+  read           Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dream Dream? @relation(fields: [relatedDreamId], references: [id], onDelete: SetNull)
+}
+
+enum NotificationType {
+  RATING_RECEIVED
+  COMMENT_ON_DREAM
+  REPLY_TO_COMMENT
+}
