@@ -42,12 +42,12 @@ export default async function ActivityPage() {
 
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <h1 className="font-pixel text-dream-bright text-sm">ACTIVITY</h1>
+      <h1 className="font-sans font-semibold text-dream-bright text-sm">Activity</h1>
       <div className="space-y-3">
         {notifications.map((n) => {
           const triggerUsername = n.relatedUserId ? userMap[n.relatedUserId] : null;
           return (
-            <div key={n.id} className={`bg-dream-surface pixel-border p-4 flex items-start gap-3 ${!n.read ? "border-dream-violet" : ""}`}>
+            <div key={n.id} className={`dream-card p-4 flex items-start gap-3 ${!n.read ? "border-dream-violet" : ""}`}>
               <span className="text-xl mt-0.5">
                 {n.type === "RATING_RECEIVED" ? "★" : n.type === "COMMENT_ON_DREAM" ? "💬" : "↩️"}
               </span>
@@ -56,11 +56,11 @@ export default async function ActivityPage() {
                   {notificationMessage(n.type, triggerUsername, n.dream?.title)}
                 </p>
                 {n.dream && (
-                  <Link href={`/dreams/${n.dream.id}`} className="font-pixel text-dream-muted text-xs hover:text-dream-bright">
-                    VIEW DREAM →
+                  <Link href={`/dreams/${n.dream.id}`} className="font-sans text-dream-muted text-xs hover:text-dream-bright transition-colors">
+                    View dream →
                   </Link>
                 )}
-                <p className="font-pixel text-dream-muted text-xs mt-1">
+                <p className="font-sans text-dream-muted text-xs mt-1">
                   {new Date(n.createdAt).toLocaleDateString()}
                 </p>
               </div>
@@ -68,7 +68,7 @@ export default async function ActivityPage() {
           );
         })}
         {notifications.length === 0 && (
-          <p className="font-pixel text-dream-muted text-xs">No activity yet. Start exploring dreams!</p>
+          <p className="font-sans text-dream-muted text-sm">No activity yet. Start exploring dreams!</p>
         )}
       </div>
     </div>

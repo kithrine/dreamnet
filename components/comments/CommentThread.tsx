@@ -25,26 +25,26 @@ function CommentNode({ comment, onReply, depth = 0 }: CommentProps) {
   const [showReply, setShowReply] = useState(false);
 
   return (
-    <div className={`${depth > 0 ? "ml-8 border-l-2 border-dream-purple pl-4" : ""}`}>
+    <div className={depth > 0 ? "ml-10 border-l-2 border-dream-purple/30 pl-4" : ""}>
       <div className="flex items-start gap-3 py-3">
         <div
-          className="w-8 h-8 rounded flex-shrink-0 mt-1"
+          className="w-8 h-8 rounded-full flex-shrink-0 mt-0.5"
           style={{ backgroundColor: AVATAR_COLORS[comment.user.avatarId] ?? "#7c3aed" }}
         />
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="font-pixel text-dream-violet text-xs">{comment.user.username}</span>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="font-sans font-semibold text-dream-text text-sm">{comment.user.username}</span>
             <span className="font-sans text-dream-muted text-xs">
               {new Date(comment.createdAt).toLocaleDateString()}
             </span>
           </div>
-          <p className="font-sans text-dream-text text-sm mt-1 leading-relaxed">{comment.content}</p>
+          <p className="font-sans text-dream-text text-sm leading-relaxed">{comment.content}</p>
           {depth < 3 && (
             <button
               onClick={() => setShowReply((v) => !v)}
-              className="font-pixel text-dream-muted text-xs mt-2 hover:text-dream-bright"
+              className="font-sans text-dream-muted text-xs mt-2 hover:text-dream-bright transition-colors"
             >
-              {showReply ? "CANCEL" : "REPLY"}
+              {showReply ? "Cancel" : "Reply"}
             </button>
           )}
           {showReply && (
@@ -75,12 +75,12 @@ export default function CommentThread({ comments, onComment, onReply }: CommentT
   return (
     <div>
       <CommentInput placeholder="Share your thoughts on this dream..." onSubmit={onComment} />
-      <div className="mt-6 space-y-2 divide-y divide-dream-border">
+      <div className="mt-6 space-y-1 divide-y divide-white/8">
         {comments.map((comment) => (
           <CommentNode key={comment.id} comment={comment} onReply={onReply} />
         ))}
         {comments.length === 0 && (
-          <p className="font-pixel text-dream-muted text-xs pt-6">No comments yet. Start the conversation!</p>
+          <p className="font-sans text-dream-muted text-sm pt-6">No comments yet. Start the conversation!</p>
         )}
       </div>
     </div>

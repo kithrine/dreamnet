@@ -27,25 +27,25 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
     <div className="max-w-3xl mx-auto p-6 space-y-8">
       <div className="flex items-center gap-6">
         <div
-          className="w-20 h-20 rounded pixel-border flex-shrink-0"
+          className="w-20 h-20 rounded-full flex-shrink-0"
           style={{ backgroundColor: AVATAR_COLORS[user.avatarId] ?? "#7c3aed" }}
         />
         <div>
-          <h1 className="font-pixel text-dream-bright text-sm">{user.username}</h1>
-          <p className="font-pixel text-dream-gold text-xs mt-2">★ {user.totalStars} stars</p>
-          <p className="font-pixel text-dream-muted text-xs mt-1">
+          <h1 className="font-sans text-2xl font-bold text-dream-bright">{user.username}</h1>
+          <p className="font-sans font-medium text-dream-gold text-sm mt-2">★ {user.totalStars} stars</p>
+          <p className="font-sans font-medium text-dream-muted text-sm mt-1">
             Joined {new Date(user.createdAt).toLocaleDateString()}
           </p>
-          <p className="font-pixel text-dream-muted text-xs">{user.dreams.length} dream{user.dreams.length !== 1 ? "s" : ""} posted</p>
+          <p className="font-sans font-medium text-dream-muted text-sm">{user.dreams.length} dream{user.dreams.length !== 1 ? "s" : ""} posted</p>
         </div>
       </div>
 
       <div>
-        <h2 className="font-pixel text-dream-text text-xs tracking-widest mb-4">DREAMS</h2>
+        <h2 className="font-sans font-semibold text-dream-text text-sm mb-4">Dreams</h2>
         <div className="space-y-3">
           {user.dreams.map((dream) => <DreamCard key={dream.id} dream={dream} />)}
           {user.dreams.length === 0 && (
-            <p className="font-pixel text-dream-muted text-xs">This dreamer hasn&apos;t posted yet.</p>
+            <p className="font-sans text-dream-muted text-sm">This dreamer hasn&apos;t posted yet.</p>
           )}
         </div>
       </div>

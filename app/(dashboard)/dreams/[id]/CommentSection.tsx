@@ -21,7 +21,7 @@ export default function CommentSection({
   canComment: boolean;
 }) {
   if (!canComment) {
-    return <p className="font-pixel text-dream-muted text-xs">Sign in to comment.</p>;
+    return <p className="font-sans text-dream-muted text-sm">Sign in to comment.</p>;
   }
 
   return (

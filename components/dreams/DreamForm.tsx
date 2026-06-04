@@ -11,39 +11,39 @@ export default function DreamForm({ action }: { action: Action }) {
   return (
     <form action={formAction} className="space-y-6">
       {state?.error && (
-        <p className="font-pixel text-red-400 text-xs">{state.error}</p>
+        <p className="font-sans text-red-400 text-sm">{state.error}</p>
       )}
       <div>
-        <label className="font-pixel text-dream-muted text-xs block mb-2">DREAM TITLE</label>
+        <label className="font-sans font-medium text-dream-muted text-sm block mb-2">Dream Title</label>
         <input
           name="title"
           required
           maxLength={120}
           placeholder="Give your dream a name..."
-          className="w-full bg-dream-purple border border-dream-border p-3 text-dream-text font-sans focus:outline-none focus:border-dream-violet"
+          className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-dream-text font-sans text-sm focus:outline-none focus:border-dream-violet focus:bg-white/10 transition-colors"
         />
       </div>
       <div>
-        <label className="font-pixel text-dream-muted text-xs block mb-2">YOUR DREAM</label>
+        <label className="font-sans font-medium text-dream-muted text-sm block mb-2">Your Dream</label>
         <textarea
           name="content"
           required
           rows={12}
           placeholder="Describe your dream in as much detail as you remember..."
-          className="w-full bg-dream-purple border border-dream-border p-3 text-dream-text font-sans focus:outline-none focus:border-dream-violet resize-none"
+          className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-dream-text font-sans text-sm focus:outline-none focus:border-dream-violet focus:bg-white/10 transition-colors resize-none"
         />
       </div>
       <div>
-        <label className="font-pixel text-dream-muted text-xs block mb-2">TAGS (comma-separated)</label>
+        <label className="font-sans font-medium text-dream-muted text-sm block mb-2">Tags (comma-separated)</label>
         <input
           name="tags"
           placeholder="lucid, flying, ocean..."
-          className="w-full bg-dream-purple border border-dream-border p-3 text-dream-text font-sans focus:outline-none focus:border-dream-violet"
+          className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-dream-text font-sans text-sm focus:outline-none focus:border-dream-violet focus:bg-white/10 transition-colors"
         />
-        <p className="font-pixel text-dream-muted text-xs mt-1">Up to 10 tags.</p>
+        <p className="font-sans text-dream-muted text-sm mt-1">Up to 10 tags.</p>
       </div>
       <Button type="submit" disabled={pending}>
-        {pending ? "SAVING..." : "SAVE DREAM +2★"}
+        {pending ? "Saving..." : "Save Dream +2★"}
       </Button>
     </form>
   );
