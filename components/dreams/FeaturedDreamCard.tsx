@@ -21,11 +21,18 @@ export default function FeaturedDreamCard({ dream }: FeaturedDreamProps) {
       <div className="dream-card-gold p-5 hover:border-dream-gold/50 transition-colors">
         <div className="flex gap-6">
           {/* Illustration placeholder — replaced when images are added */}
-          <div className="w-56 h-48 rounded-xl bg-gradient-to-br from-dream-violet via-dream-purple to-dream-bg flex-shrink-0 relative overflow-hidden">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-5xl opacity-30">🌙</span>
-            </div>
-            <div className="absolute bottom-2 right-2 text-dream-gold/40 text-lg">✦</div>
+          <div className="w-56 h-48 rounded-xl flex-shrink-0 relative overflow-hidden bg-gradient-to-br from-violet-600 via-dream-purple to-indigo-900">
+            {/* Glow orb */}
+            <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-dream-violet/50 blur-2xl" />
+            {/* Moon */}
+            <div className="absolute top-4 right-6 text-3xl opacity-80">🌙</div>
+            {/* Sparkles */}
+            <div className="absolute top-6  left-6  text-dream-gold/70 text-xs">✦</div>
+            <div className="absolute bottom-8 right-8 text-dream-gold/50 text-base">✦</div>
+            <div className="absolute bottom-4 left-10 text-dream-gold/40 text-xs">✦</div>
+            <div className="absolute top-16 right-4 text-dream-rose/40 text-xs">✦</div>
+            {/* Bottom fade */}
+            <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-indigo-900/80 to-transparent" />
           </div>
 
           {/* Content */}
