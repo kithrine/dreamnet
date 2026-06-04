@@ -185,7 +185,7 @@ export default function SignInPage() {
       <div className="hidden lg:flex lg:flex-1 relative overflow-hidden bg-dream-purple/20">
         <div className="absolute inset-0 bg-gradient-to-br from-dream-purple/80 via-dream-bg/60 to-dream-bg" />
         <img
-          src="/login-bg.jpg"
+          src="/images/dreamnet-login-bg.png"
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
           onError={(e) => {
