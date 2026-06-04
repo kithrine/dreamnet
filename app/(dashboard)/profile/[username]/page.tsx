@@ -1,10 +1,7 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import DreamCard from "@/components/dreams/DreamCard";
-
-const AVATAR_COLORS: Record<number, string> = {
-  1: "#7c3aed", 2: "#2563eb", 3: "#16a34a", 4: "#dc2626", 5: "#ca8a04",
-};
+import Avatar from "@/components/ui/Avatar";
 
 export default async function ProfilePage({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
@@ -26,10 +23,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-8">
       <div className="flex items-center gap-6">
-        <div
-          className="w-20 h-20 rounded-full flex-shrink-0"
-          style={{ backgroundColor: AVATAR_COLORS[user.avatarId] ?? "#7c3aed" }}
-        />
+        <Avatar avatarId={user.avatarId} className="w-20 h-20" />
         <div>
           <h1 className="font-sans text-2xl font-bold text-dream-bright">{user.username}</h1>
           <p className="font-sans font-medium text-dream-gold text-sm mt-2">★ {user.totalStars} stars</p>

@@ -11,6 +11,10 @@ export async function rateDreamAction(dreamId: string, value: number) {
   if (!session) return { error: "Not authenticated." };
   if (value < 1 || value > 5) return { error: "Invalid rating." };
 
+  // Verify the session user actually exists in the DB (guards against stale JWT after a DB reset)
+  const userExists = await prisma.user.findUnique({ where: { id: session.user.id }, select: { id: true } });
+  if (!userExists) return { error: "Session expired. Please sign out and sign back in." };
+
   const dream = await prisma.dream.findUnique({ where: { id: dreamId } });
   if (!dream) return { error: "Dream not found." };
   if (dream.userId === session.user.id) return { error: "You cannot rate your own dream." };
@@ -53,6 +57,9 @@ export async function addCommentAction(dreamId: string, content: string, parentI
   const session = await getServerSession(authOptions);
   if (!session) return { error: "Not authenticated." };
   if (!content.trim()) return { error: "Comment cannot be empty." };
+
+  const userExists = await prisma.user.findUnique({ where: { id: session.user.id }, select: { id: true } });
+  if (!userExists) return { error: "Session expired. Please sign out and sign back in." };
 
   const dream = await prisma.dream.findUnique({ where: { id: dreamId } });
   if (!dream) return { error: "Dream not found." };

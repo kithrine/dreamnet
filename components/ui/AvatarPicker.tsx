@@ -1,13 +1,7 @@
 "use client";
-import { cn } from "@/lib/utils";
 
-const AVATARS = [
-  { id: 1, color: "#7c3aed", label: "Purple Spirit" },
-  { id: 2, color: "#2563eb", label: "Night Owl" },
-  { id: 3, color: "#16a34a", label: "Dream Weaver" },
-  { id: 4, color: "#dc2626", label: "Fire Dreamer" },
-  { id: 5, color: "#ca8a04", label: "Star Gazer" },
-];
+import { AVATAR_MAP } from "@/lib/avatars";
+import { cn } from "@/lib/utils";
 
 interface AvatarPickerProps {
   selected: number;
@@ -17,21 +11,35 @@ interface AvatarPickerProps {
 export default function AvatarPicker({ selected, onChange }: AvatarPickerProps) {
   return (
     <div className="flex gap-3">
-      {AVATARS.map((avatar) => (
-        <button
-          key={avatar.id}
-          type="button"
-          onClick={() => onChange(avatar.id)}
-          className={cn(
-            "w-12 h-12 rounded-full transition-all",
-            selected === avatar.id
-              ? "ring-2 ring-dream-gold ring-offset-2 ring-offset-dream-surface scale-110"
-              : "opacity-60 hover:opacity-90 hover:scale-105"
-          )}
-          style={{ backgroundColor: avatar.color }}
-          title={avatar.label}
-        />
-      ))}
+      {Object.entries(AVATAR_MAP).map(([idStr, avatar]) => {
+        const id = Number(idStr);
+        return (
+          <button
+            key={id}
+            type="button"
+            onClick={() => onChange(id)}
+            className={cn(
+              "w-14 h-14 rounded-full transition-all overflow-hidden",
+              selected === id
+                ? "ring-2 ring-dream-gold ring-offset-2 ring-offset-dream-surface/75 scale-110"
+                : "opacity-60 hover:opacity-90 hover:scale-105"
+            )}
+            title={avatar.label}
+          >
+            <img
+              src={avatar.src}
+              alt={avatar.label}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                // Fallback to colored circle if image missing
+                const el = e.currentTarget.parentElement as HTMLButtonElement;
+                el.style.backgroundColor = avatar.fallback;
+                e.currentTarget.style.display = "none";
+              }}
+            />
+          </button>
+        );
+      })}
       <input type="hidden" name="avatarId" value={selected} />
     </div>
   );
