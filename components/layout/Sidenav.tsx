@@ -96,7 +96,7 @@ export default function Sidenav({ session, commentCount }: SidenavProps) {
         </div>
 
         {/* Nav Links */}
-        <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto">
+        <nav className="px-3 space-y-0.5">
           {NAV_LINKS.map((link) => {
             const basePath = link.href.split("?")[0];
             const isActive =
