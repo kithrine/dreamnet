@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { href: "/",         label: "Home",       icon: "🏠" },
   { href: "/explore",  label: "Explore",    icon: "🔍" },
   { href: "/activity", label: "Activity",   icon: "💬" },
+  { href: "/game",     label: "Game",       icon: "🎮" },
 ];
 
 export default function Sidenav({ session }: { session: Session }) {
@@ -64,17 +65,6 @@ export default function Sidenav({ session }: { session: Session }) {
           )}
         >
           <span className="text-base">👤</span> Profile
-        </Link>
-        <Link
-          href="/game"
-          className={cn(
-            "flex items-center gap-3 px-3 py-2.5 rounded-xl font-sans text-sm transition-colors",
-            pathname === "/game"
-              ? "bg-dream-purple/60 text-dream-text font-medium"
-              : "text-dream-muted hover:text-dream-text hover:bg-white/6"
-          )}
-        >
-          <span className="text-base">🎮</span> Dream Game
         </Link>
       </nav>
 
