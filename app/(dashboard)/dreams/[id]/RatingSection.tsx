@@ -17,14 +17,14 @@ export default function RatingSection({ dreamId, canRate, existingRating }: Rati
   if (existingRating) {
     return (
       <div>
-        <p className="font-pixel text-dream-muted text-xs mb-2">YOUR RATING</p>
+        <p className="font-sans text-dream-muted text-sm mb-2">Your rating</p>
         <StarRating value={existingRating} />
       </div>
     );
   }
 
   if (!canRate) {
-    return <p className="font-pixel text-dream-muted text-xs">{submitted ? "Rating submitted!" : "Sign in to rate this dream."}</p>;
+    return <p className="font-sans text-dream-muted text-sm">{submitted ? "Rating submitted!" : "Sign in to rate this dream."}</p>;
   }
 
   async function handleRate(value: number) {
@@ -33,12 +33,12 @@ export default function RatingSection({ dreamId, canRate, existingRating }: Rati
     else setSubmitted(true);
   }
 
-  if (submitted) return <p className="font-pixel text-green-400 text-xs">Rating submitted! ★</p>;
+  if (submitted) return <p className="font-sans text-green-400 text-sm">Rating submitted! ★</p>;
 
   return (
     <div>
-      {error && <p className="font-pixel text-red-400 text-xs mb-2">{error}</p>}
-      <p className="font-pixel text-dream-muted text-xs mb-2">RATE THIS DREAM</p>
+      {error && <p className="font-sans text-red-400 text-sm mb-2">{error}</p>}
+      <p className="font-sans text-dream-muted text-sm mb-2">Rate this dream</p>
       <StarRating interactive onRate={handleRate} />
     </div>
   );

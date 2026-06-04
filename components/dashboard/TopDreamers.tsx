@@ -8,22 +8,32 @@ const AVATAR_COLORS: Record<number, string> = {
 
 export default function TopDreamers({ dreamers }: { dreamers: Dreamer[] }) {
   return (
-    <div className="bg-dream-surface pixel-border p-4">
-      <h3 className="font-pixel text-dream-text text-xs tracking-widest mb-4">TOP DREAMERS</h3>
+    <div className="dream-card p-5">
+      <h3 className="font-sans font-semibold text-dream-text text-sm mb-4 flex items-center gap-2">
+        🏆 Top Dreamers
+      </h3>
       <div className="space-y-3">
         {dreamers.map((dreamer, i) => (
-          <Link key={dreamer.id} href={`/profile/${dreamer.username}`} className="flex items-center gap-3 hover:opacity-80">
-            <span className="font-pixel text-dream-muted text-xs w-4">{i + 1}</span>
+          <Link
+            key={dreamer.id}
+            href={`/profile/${dreamer.username}`}
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+          >
+            <span className="font-sans text-dream-muted text-xs w-4 text-center">{i + 1}</span>
             <div
-              className="w-8 h-8 rounded flex-shrink-0"
+              className="w-8 h-8 rounded-full flex-shrink-0"
               style={{ backgroundColor: AVATAR_COLORS[dreamer.avatarId] ?? "#7c3aed" }}
             />
-            <span className="font-sans text-dream-text text-sm flex-1 truncate">{dreamer.username}</span>
-            <span className="font-pixel text-dream-gold text-xs">★ {dreamer.totalStars}</span>
+            <span className="font-sans text-dream-text text-sm flex-1 truncate font-medium">
+              {dreamer.username}
+            </span>
+            <span className="font-sans text-dream-gold text-xs font-semibold">
+              ★ {dreamer.totalStars}
+            </span>
           </Link>
         ))}
         {dreamers.length === 0 && (
-          <p className="font-pixel text-dream-muted text-xs">No dreamers yet.</p>
+          <p className="font-sans text-dream-muted text-xs">No dreamers yet.</p>
         )}
       </div>
     </div>

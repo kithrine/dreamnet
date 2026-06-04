@@ -70,7 +70,7 @@ export default async function ExplorePage({
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <h1 className="font-pixel text-dream-bright text-sm">EXPLORE DREAMS</h1>
+      <h1 className="font-sans font-semibold text-dream-bright text-sm">Explore Dreams</h1>
 
       {/* Search */}
       <form method="GET" className="flex gap-2">
@@ -78,17 +78,17 @@ export default async function ExplorePage({
           name="q"
           defaultValue={q}
           placeholder="Search dreams, users, or tags..."
-          className="flex-1 bg-dream-purple border border-dream-border p-3 text-dream-text font-sans focus:outline-none focus:border-dream-violet"
+          className="flex-1 bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-dream-text font-sans text-sm focus:outline-none focus:border-dream-violet focus:bg-white/10 transition-colors"
         />
-        <button type="submit" className="font-pixel text-xs bg-dream-violet text-white px-4 pixel-border hover:bg-dream-bright">
-          SEARCH
+        <button type="submit" className="font-sans font-medium text-sm bg-dream-violet text-white px-5 rounded-xl hover:bg-dream-bright active:scale-[0.98] transition-all">
+          Search
         </button>
       </form>
 
       {/* Tag filters */}
       <div className="flex flex-wrap gap-2">
         {tag && (
-          <Link href="/explore" className="font-pixel text-xs text-red-400 border border-red-400 px-2 py-1 hover:bg-red-900/20">
+          <Link href="/explore" className="font-sans text-sm text-red-400 border border-red-400 rounded-full px-3 py-1 hover:bg-red-900/20 transition-colors">
             ✕ Clear filter
           </Link>
         )}
@@ -105,7 +105,7 @@ export default async function ExplorePage({
           <Link
             key={s.value}
             href={buildUrl({ sort: s.value, page: "1" })}
-            className={`font-pixel text-xs px-3 py-2 pixel-border ${sort === s.value ? "bg-dream-violet text-white" : "text-dream-muted hover:text-dream-text"}`}
+            className={`font-sans font-medium text-sm px-4 py-2 rounded-xl dream-card transition-colors ${sort === s.value ? "bg-dream-violet text-white" : "text-dream-muted hover:text-dream-text"}`}
           >
             {s.label}
           </Link>
@@ -114,13 +114,13 @@ export default async function ExplorePage({
 
       {/* Results */}
       <div>
-        <p className="font-pixel text-dream-muted text-xs mb-4">
+        <p className="font-sans text-dream-muted text-sm mb-4">
           {total} dream{total !== 1 ? "s" : ""} found
         </p>
         <div className="space-y-3">
           {dreams.map((dream) => <DreamCard key={dream.id} dream={dream} />)}
           {dreams.length === 0 && (
-            <p className="font-pixel text-dream-muted text-xs">No dreams found. Try a different search.</p>
+            <p className="font-sans text-dream-muted text-sm">No dreams found. Try a different search.</p>
           )}
         </div>
       </div>
@@ -129,16 +129,16 @@ export default async function ExplorePage({
       {pages > 1 && (
         <div className="flex gap-2">
           {page > 1 && (
-            <Link href={buildUrl({ page: String(page - 1) })} className="font-pixel text-xs px-3 py-2 pixel-border text-dream-muted hover:text-dream-text">
-              ← PREV
+            <Link href={buildUrl({ page: String(page - 1) })} className="font-sans font-medium text-sm px-4 py-2 dream-card text-dream-muted hover:text-dream-text transition-colors">
+              ← Prev
             </Link>
           )}
-          <span className="font-pixel text-xs px-3 py-2 text-dream-muted">
+          <span className="font-sans text-sm px-4 py-2 text-dream-muted">
             {page} / {pages}
           </span>
           {page < pages && (
-            <Link href={buildUrl({ page: String(page + 1) })} className="font-pixel text-xs px-3 py-2 pixel-border text-dream-muted hover:text-dream-text">
-              NEXT →
+            <Link href={buildUrl({ page: String(page + 1) })} className="font-sans font-medium text-sm px-4 py-2 dream-card text-dream-muted hover:text-dream-text transition-colors">
+              Next →
             </Link>
           )}
         </div>

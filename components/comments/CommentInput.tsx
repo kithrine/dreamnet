@@ -30,20 +30,20 @@ export default function CommentInput({ onSubmit, placeholder = "Write a comment.
 
   return (
     <form onSubmit={handleSubmit} className="space-y-2">
-      {error && <p className="font-pixel text-red-400 text-xs">{error}</p>}
+      {error && <p className="font-sans text-red-400 text-sm">{error}</p>}
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder={placeholder}
         rows={3}
-        className="w-full bg-dream-purple border border-dream-border p-3 text-dream-text font-sans text-sm focus:outline-none focus:border-dream-violet resize-none"
+        className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-dream-text font-sans text-sm placeholder:text-dream-muted/60 focus:outline-none focus:border-dream-violet focus:bg-white/10 transition-colors resize-none"
       />
       <div className="flex gap-2">
         <Button type="submit" disabled={isPending || !content.trim()}>
-          {isPending ? "POSTING..." : "POST +1★"}
+          {isPending ? "Posting..." : "Post +1★"}
         </Button>
         {onCancel && (
-          <Button type="button" variant="secondary" onClick={onCancel}>CANCEL</Button>
+          <Button type="button" variant="secondary" onClick={onCancel}>Cancel</Button>
         )}
       </div>
     </form>

@@ -55,12 +55,12 @@ export default async function DreamDetailPage({ params }: { params: Promise<{ id
     <div className="max-w-3xl mx-auto p-6 space-y-8">
       {/* Header */}
       <div>
-        <h1 className="font-pixel text-dream-gold text-base mb-2">{dream.title}</h1>
+        <h1 className="font-sans text-2xl font-bold text-dream-gold mb-2">{dream.title}</h1>
         <div className="flex items-center gap-3">
-          <Link href={`/profile/${dream.user.username}`} className="font-pixel text-dream-violet text-xs hover:text-dream-bright">
+          <Link href={`/profile/${dream.user.username}`} className="font-sans text-dream-violet text-sm hover:text-dream-bright transition-colors">
             by {dream.user.username}
           </Link>
-          <span className="font-pixel text-dream-gold text-xs">★ {dream.user.totalStars}</span>
+          <span className="font-sans font-medium text-dream-gold text-sm">★ {dream.user.totalStars}</span>
         </div>
         <div className="flex flex-wrap gap-2 mt-3">
           {dream.tags.map(({ tag }) => <TagChip key={tag.name} name={tag.name} />)}
@@ -68,24 +68,24 @@ export default async function DreamDetailPage({ params }: { params: Promise<{ id
       </div>
 
       {/* Content */}
-      <div className="bg-dream-surface pixel-border p-6">
+      <div className="dream-card p-6">
         <p className="font-sans text-dream-text text-sm leading-relaxed whitespace-pre-wrap">{dream.content}</p>
       </div>
 
       {/* Rating */}
-      <div className="bg-dream-surface pixel-border p-6 space-y-3">
-        <h2 className="font-pixel text-dream-text text-xs tracking-widest">RATING</h2>
+      <div className="dream-card p-6 space-y-3">
+        <h2 className="font-sans font-semibold text-dream-text text-sm">Rating</h2>
         <div className="flex items-center gap-4">
-          <span className="font-pixel text-dream-gold text-sm">★ {dream.averageRating.toFixed(1)}</span>
-          <span className="font-pixel text-dream-muted text-xs">{dream.ratingCount} rating{dream.ratingCount !== 1 ? "s" : ""}</span>
+          <span className="font-sans font-medium text-dream-gold text-sm">★ {dream.averageRating.toFixed(1)}</span>
+          <span className="font-sans text-dream-muted text-sm">{dream.ratingCount} rating{dream.ratingCount !== 1 ? "s" : ""}</span>
         </div>
         <RatingSection dreamId={dream.id} canRate={canRate} existingRating={userRating?.value} />
       </div>
 
       {/* Comments */}
-      <div className="bg-dream-surface pixel-border p-6 space-y-4">
-        <h2 className="font-pixel text-dream-text text-xs tracking-widest">
-          COMMENTS ({dream.comments.length})
+      <div className="dream-card p-6 space-y-4">
+        <h2 className="font-sans font-semibold text-dream-text text-sm">
+          Comments ({dream.comments.length})
         </h2>
         <CommentSection dreamId={dream.id} comments={dream.comments} canComment={!!session} />
       </div>
