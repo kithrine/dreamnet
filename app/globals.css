@@ -1,18 +1,21 @@
 @import "tailwindcss";
 
 @theme {
-  --color-dream-bg: #0d0621;
+  /* Colors — same palette, kept intact */
+  --color-dream-bg:      #0d0621;
   --color-dream-surface: #1a0f35;
-  --color-dream-purple: #2d1b69;
-  --color-dream-violet: #7c3aed;
-  --color-dream-bright: #a855f7;
-  --color-dream-gold: #f59e0b;
-  --color-dream-text: #e2d9f3;
-  --color-dream-muted: #9b8fc4;
-  --color-dream-border: #3d2a6b;
+  --color-dream-purple:  #2d1b69;
+  --color-dream-violet:  #7c3aed;
+  --color-dream-bright:  #a855f7;
+  --color-dream-rose:    #c084fc;
+  --color-dream-gold:    #f59e0b;
+  --color-dream-text:    #e2d9f3;
+  --color-dream-muted:   #9b8fc4;
+  --color-dream-border:  #3d2a6b;
 
-  --font-pixel: var(--font-press-start), monospace;
-  --font-sans: var(--font-inter), sans-serif;
+  /* Fonts */
+  --font-display: var(--font-dancing), cursive;
+  --font-sans:    var(--font-inter), sans-serif;
 }
 
 @layer base {
@@ -20,18 +23,42 @@
     background-color: var(--color-dream-bg);
     color: var(--color-dream-text);
   }
-  * {
-    border-color: var(--color-dream-border);
-  }
 }
 
 @layer utilities {
-  .pixel-border {
-    border: 2px solid var(--color-dream-violet);
-    box-shadow: 2px 2px 0 var(--color-dream-purple);
+  /* Replaces old pixel-border */
+  .dream-card {
+    border-radius: 1rem;
+    background-color: var(--color-dream-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   }
-  .pixel-border-gold {
-    border: 2px solid var(--color-dream-gold);
-    box-shadow: 2px 2px 0 rgba(245, 158, 11, 0.3);
+
+  /* Replaces old pixel-border-gold */
+  .dream-card-gold {
+    border-radius: 1rem;
+    background-color: var(--color-dream-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(245, 158, 11, 0.35);
+  }
+
+  /* Primary pill button — use as a className, pairs with px-* py-* */
+  .dream-btn {
+    border-radius: 9999px;
+    background-image: linear-gradient(to right, var(--color-dream-violet), var(--color-dream-rose));
+    color: white;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .dream-btn:hover { opacity: 0.92; }
+  .dream-btn:active { transform: scale(0.98); }
+
+  /* Frosted glass surface */
+  .glass-surface {
+    backdrop-filter: blur(12px);
+    background-color: rgba(26, 15, 53, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
 }
