@@ -21,13 +21,13 @@ export async function getFeaturedDream() {
   if (existing) return existing.dream;
 
   // Pick a random dream — prefer those with at least one rating
-  const count = await prisma.dream.count({ where: { ratingCount: { gt: 0 } } });
-  const fallbackCount = await prisma.dream.count();
+  const count = await prisma.dream.count({ where: { archivedAt: null, ratingCount: { gt: 0 } } });
+  const fallbackCount = await prisma.dream.count({ where: { archivedAt: null } });
   if (fallbackCount === 0) return null;
 
   const skip = Math.floor(Math.random() * (count > 0 ? count : fallbackCount));
   const [dream] = await prisma.dream.findMany({
-    where: count > 0 ? { ratingCount: { gt: 0 } } : {},
+    where: count > 0 ? { archivedAt: null, ratingCount: { gt: 0 } } : { archivedAt: null },
     skip,
     take: 1,
     include: {

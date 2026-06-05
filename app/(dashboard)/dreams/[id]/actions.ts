@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { awardStars } from "@/lib/stars";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function rateDreamAction(dreamId: string, value: number) {
   const session = await getServerSession(authOptions);
@@ -22,10 +23,28 @@ export async function rateDreamAction(dreamId: string, value: number) {
   const existing = await prisma.rating.findUnique({
     where: { userId_dreamId: { userId: session.user.id, dreamId } },
   });
-  if (existing) return { error: "You have already rated this dream." };
 
-  await prisma.rating.create({ data: { value, userId: session.user.id, dreamId } });
+  if (existing) {
+    // Re-rating: update value only, no additional star award
+    await prisma.rating.update({
+      where: { userId_dreamId: { userId: session.user.id, dreamId } },
+      data: { value },
+    });
+  } else {
+    // First-time rating: create, award stars, notify dream owner
+    await prisma.rating.create({ data: { value, userId: session.user.id, dreamId } });
+    await awardStars(dream.userId, value, "RECEIVE_RATING");
+    await prisma.notification.create({
+      data: {
+        userId: dream.userId,
+        type: "RATING_RECEIVED",
+        relatedDreamId: dreamId,
+        relatedUserId: session.user.id,
+      },
+    });
+  }
 
+  // Always recalculate average (covers both first rating and re-rating)
   const agg = await prisma.rating.aggregate({
     where: { dreamId },
     _avg: { value: true },
@@ -36,16 +55,6 @@ export async function rateDreamAction(dreamId: string, value: number) {
     data: {
       averageRating: agg._avg.value ?? 0,
       ratingCount: agg._count.value,
-    },
-  });
-
-  await awardStars(dream.userId, value, "RECEIVE_RATING");
-  await prisma.notification.create({
-    data: {
-      userId: dream.userId,
-      type: "RATING_RECEIVED",
-      relatedDreamId: dreamId,
-      relatedUserId: session.user.id,
     },
   });
 
@@ -101,4 +110,53 @@ export async function addCommentAction(dreamId: string, content: string, parentI
 
   revalidatePath(`/dreams/${dreamId}`);
   return { success: true, commentId: comment.id };
+}
+
+export async function updateCommentAction(commentId: string, dreamId: string, content: string) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) return { error: "Not authenticated." };
+
+  const comment = await prisma.comment.findUnique({
+    where: { id: commentId },
+    select: { userId: true },
+  });
+  if (!comment || comment.userId !== session.user.id) return { error: "Not authorized." };
+
+  const trimmed = content.trim();
+  if (!trimmed) return { error: "Comment cannot be empty." };
+
+  await prisma.comment.update({ where: { id: commentId }, data: { content: trimmed } });
+  revalidatePath(`/dreams/${dreamId}`);
+  return { success: true };
+}
+
+export async function archiveCommentAction(commentId: string, dreamId: string) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) return { error: "Not authenticated." };
+
+  const comment = await prisma.comment.findUnique({
+    where: { id: commentId },
+    select: { userId: true },
+  });
+  if (!comment || comment.userId !== session.user.id) return { error: "Not authorized." };
+
+  await prisma.comment.update({ where: { id: commentId }, data: { archivedAt: new Date() } });
+  revalidatePath(`/dreams/${dreamId}`);
+  return { success: true };
+}
+
+export async function archiveDreamAction(dreamId: string) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) return { error: "Not authenticated." };
+
+  const dream = await prisma.dream.findUnique({
+    where: { id: dreamId },
+    select: { userId: true },
+  });
+  if (!dream) return { error: "Dream not found." };
+  if (dream.userId !== session.user.id) return { error: "Not authorized." };
+
+  await prisma.dream.update({ where: { id: dreamId }, data: { archivedAt: new Date() } });
+  revalidatePath("/", "layout");
+  redirect("/");
 }
