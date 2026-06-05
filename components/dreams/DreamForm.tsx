@@ -20,7 +20,7 @@ export default function DreamForm({ action }: { action: Action }) {
           required
           maxLength={120}
           placeholder="Give your dream a name..."
-          className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-dream-text font-sans text-sm focus:outline-none focus:border-dream-violet focus:bg-white/10 transition-colors"
+          className="w-full bg-white/18 border border-white/25 rounded-xl px-4 py-3 text-dream-text font-sans text-sm focus:outline-none focus:border-dream-violet focus:bg-white/22 transition-colors"
         />
       </div>
       <div>
@@ -30,7 +30,7 @@ export default function DreamForm({ action }: { action: Action }) {
           required
           rows={12}
           placeholder="Describe your dream in as much detail as you remember..."
-          className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-dream-text font-sans text-sm focus:outline-none focus:border-dream-violet focus:bg-white/10 transition-colors resize-none"
+          className="w-full bg-white/18 border border-white/25 rounded-xl px-4 py-3 text-dream-text font-sans text-sm focus:outline-none focus:border-dream-violet focus:bg-white/22 transition-colors resize-none"
         />
       </div>
       <div>
@@ -38,7 +38,7 @@ export default function DreamForm({ action }: { action: Action }) {
         <input
           name="tags"
           placeholder="lucid, flying, ocean..."
-          className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-dream-text font-sans text-sm focus:outline-none focus:border-dream-violet focus:bg-white/10 transition-colors"
+          className="w-full bg-white/18 border border-white/25 rounded-xl px-4 py-3 text-dream-text font-sans text-sm focus:outline-none focus:border-dream-violet focus:bg-white/22 transition-colors"
         />
         <p className="font-sans text-dream-muted text-sm mt-1">Up to 10 tags.</p>
       </div>
