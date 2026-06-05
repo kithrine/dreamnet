@@ -689,7 +689,7 @@ function SceneInner({
       });
       if (tip && host) {
         out.copy(tip);
-        host.localToWorld(out); // local -> world using the avatar's live position/rotation
+        (host as THREE.Object3D).localToWorld(out); // local -> world using the avatar's live position/rotation
       }
     }
     return out;
