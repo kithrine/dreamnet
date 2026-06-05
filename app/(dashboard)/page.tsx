@@ -65,29 +65,37 @@ export default async function DashboardPage() {
           <TrendingTags tags={trendingTags} />
           <TopDreamers dreamers={topDreamers} />
 
-          {/* Promo CTA card with dashboard-bg image */}
-          <div className="dream-card overflow-hidden">
-            {/* Decorative image strip — uses CSS background to avoid onError in server component */}
-            <div
-              className="relative h-32 overflow-hidden"
-              style={{
-                backgroundImage: "url('/images/dreamnet-dashboard-bg.png')",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-dream-surface" />
-            </div>
-            {/* Text + button */}
-            <div className="px-5 pb-5 text-center space-y-3 -mt-2">
-              <div className="font-sans text-dream-text text-sm space-y-0.5">
+          {/* Promo CTA card — full-bleed background image with overlaid text */}
+          <div
+            className="relative rounded-2xl overflow-hidden"
+            style={{
+              backgroundImage: "url('/images/dreamnet-share-card.png')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            {/* Left-side gradient so text stays readable against the illustration */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-transparent" />
+            {/* Bottom gradient for button readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+
+            {/* Content */}
+            <div className="relative z-10 flex flex-col justify-between p-5 h-52">
+              {/* Text */}
+              <div className="font-sans text-white text-sm leading-relaxed drop-shadow-md">
                 <p>Share your dreams.</p>
                 <p>Connect with dreamers.</p>
                 <p>Explore endless worlds.</p>
               </div>
+
+              {/* Sparkle decorations */}
+              <span className="absolute top-3 right-6 text-dream-gold text-base drop-shadow">✦</span>
+              <span className="absolute top-10 right-2 text-dream-gold/70 text-xs drop-shadow">✦</span>
+
+              {/* Button */}
               <Link
                 href="/dreams/new"
-                className="dream-btn inline-flex items-center gap-2 px-5 py-2.5 text-sm text-white no-underline"
+                className="dream-btn self-start inline-flex items-center gap-2 px-5 py-2.5 text-sm text-white no-underline"
               >
                 + Share a Dream
               </Link>
