@@ -57,9 +57,10 @@ const PROFILE_SVG =
 interface SidenavProps {
   session: Session;
   commentCount: number;
+  totalStars: number;
 }
 
-export default function Sidenav({ session, commentCount }: SidenavProps) {
+export default function Sidenav({ session, commentCount, totalStars }: SidenavProps) {
   const pathname = usePathname();
 
   return (
@@ -159,7 +160,7 @@ export default function Sidenav({ session, commentCount }: SidenavProps) {
 
         {/* User Card + Sign out */}
         <div className="px-4 pb-5 pt-3 flex-shrink-0">
-          <UserCard session={session} commentCount={commentCount} />
+          <UserCard session={session} commentCount={commentCount} totalStars={totalStars} />
           <button
             onClick={() => signOut({ callbackUrl: "/auth/signin" })}
             className="mt-2 w-full font-sans text-xs text-white/40 hover:text-red-400 text-left px-3 py-1 transition-colors"

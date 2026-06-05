@@ -4,10 +4,11 @@ import Avatar from "@/components/ui/Avatar";
 interface UserCardProps {
   session: Session;
   commentCount: number;
+  totalStars: number;
 }
 
-export default function UserCard({ session, commentCount }: UserCardProps) {
-  const { username, avatarId, totalStars } = session.user;
+export default function UserCard({ session, commentCount, totalStars }: UserCardProps) {
+  const { username, avatarId } = session.user;
   return (
     <div className="flex items-center gap-3 p-3 rounded-2xl bg-black/40 backdrop-blur-sm border border-white/10">
       <Avatar avatarId={avatarId} className="w-10 h-10 flex-shrink-0" />

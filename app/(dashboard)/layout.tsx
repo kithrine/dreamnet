@@ -8,13 +8,17 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const session = await getServerSession(authOptions);
   if (!session) redirect("/auth/signin");
 
-  const commentCount = await prisma.comment.count({
-    where: { userId: session.user.id },
+  // Fetch totalStars fresh from the DB — the JWT session value is stale after awards
+  const freshUser = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { totalStars: true, _count: { select: { comments: true } } },
   });
+  const totalStars = freshUser?.totalStars ?? 0;
+  const commentCount = freshUser?._count.comments ?? 0;
 
   return (
     <div className="flex min-h-screen bg-dream-bg">
-      <Sidenav session={session} commentCount={commentCount} />
+      <Sidenav session={session} commentCount={commentCount} totalStars={totalStars} />
       <main
         className="flex-1 ml-64 min-h-screen relative"
         style={{
