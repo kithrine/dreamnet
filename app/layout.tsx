@@ -18,6 +18,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "DreamNet — Share dreams. Inspire wonder.",
   description: "A social platform for sharing and exploring dreams.",
+  icons: {
+    icon: "/images/avatars/3-avatar-star.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
