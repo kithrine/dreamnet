@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { awardStars } from "@/lib/stars";
 import { randomCoverImage } from "@/lib/cover-images";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function createDreamAction(_prev: unknown, formData: FormData) {
@@ -45,5 +46,6 @@ export async function createDreamAction(_prev: unknown, formData: FormData) {
   });
 
   await awardStars(session.user.id, 2, "POST_DREAM");
+  revalidatePath("/", "layout"); // invalidate layout cache so sidenav shows updated star count
   redirect(`/dreams/${dream.id}`);
 }
