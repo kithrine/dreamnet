@@ -60,7 +60,7 @@ function SignInContent() {
         {/* Email */}
         <div>
           <label className="font-sans text-dream-text text-sm font-medium block mb-1.5">
-            Email or Username
+            Email
           </label>
           <div className="relative">
             <div className="absolute left-3 top-1/2 -translate-y-1/2 text-dream-muted">

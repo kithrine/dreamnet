@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import DreamCard from "@/components/dreams/DreamCard";
 import Avatar from "@/components/ui/Avatar";
+import BackButton from "@/components/ui/BackButton";
 
 export default async function ProfilePage({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
@@ -22,6 +23,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
 
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-8">
+      <BackButton />
       <div className="flex items-center gap-6">
         <Avatar avatarId={user.avatarId} className="w-20 h-20" />
         <div>

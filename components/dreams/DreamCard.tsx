@@ -8,6 +8,7 @@ type DreamCardProps = {
     title: string;
     averageRating: number;
     ratingCount: number;
+    coverImage: string;
     user: { username: string; avatarId: number };
     tags: { tag: { name: string } }[];
     _count: { comments: number };
@@ -15,30 +16,7 @@ type DreamCardProps = {
   rank?: number;
 };
 
-// Gradient placeholders keyed by common tag names
-const TAG_GRADIENTS: Record<string, string> = {
-  fantasy:   "from-violet-600 to-purple-900",
-  adventure: "from-orange-500 to-red-800",
-  ocean:     "from-blue-500 to-cyan-900",
-  flying:    "from-sky-400 to-indigo-800",
-  night:     "from-indigo-700 to-slate-900",
-  lucid:     "from-teal-500 to-cyan-900",
-  weird:     "from-fuchsia-600 to-purple-900",
-  city:      "from-slate-500 to-gray-900",
-  mystery:   "from-purple-700 to-slate-900",
-  forest:    "from-green-600 to-emerald-900",
-  space:     "from-blue-900 to-slate-950",
-};
-
-function getThumbnailGradient(tags: { tag: { name: string } }[]) {
-  for (const { tag } of tags) {
-    if (TAG_GRADIENTS[tag.name]) return TAG_GRADIENTS[tag.name];
-  }
-  return "from-dream-violet to-dream-purple";
-}
-
 export default function DreamCard({ dream, rank }: DreamCardProps) {
-  const gradient = getThumbnailGradient(dream.tags);
 
   return (
     <Link href={`/dreams/${dream.id}`} className="block group">
@@ -51,7 +29,13 @@ export default function DreamCard({ dream, rank }: DreamCardProps) {
         )}
 
         {/* Thumbnail */}
-        <div className={`w-20 h-16 rounded-xl bg-gradient-to-br ${gradient} flex-shrink-0`} />
+        <div className="w-20 h-16 rounded-xl flex-shrink-0 overflow-hidden bg-dream-purple/40">
+          <img
+            src={`/images/cover-photos/${dream.coverImage}`}
+            alt=""
+            className="w-full h-full object-cover"
+          />
+        </div>
 
         {/* Info */}
         <div className="flex-1 min-w-0">
@@ -61,7 +45,12 @@ export default function DreamCard({ dream, rank }: DreamCardProps) {
           <p className="font-sans text-dream-muted text-xs mt-0.5">by {dream.user.username}</p>
           <div className="flex items-center gap-4 mt-2">
             <span className="font-sans text-dream-gold text-xs font-medium">★ {dream.averageRating.toFixed(1)}</span>
-            <span className="font-sans text-dream-muted text-xs">💬 {dream._count.comments}</span>
+            <span className="font-sans text-dream-muted text-xs flex items-center gap-1">
+              <svg className="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+              </svg>
+              {dream._count.comments}
+            </span>
           </div>
         </div>
 

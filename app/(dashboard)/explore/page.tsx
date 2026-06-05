@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import DreamCard from "@/components/dreams/DreamCard";
 import TagChip from "@/components/ui/TagChip";
+import BackButton from "@/components/ui/BackButton";
 import Link from "next/link";
 
 const PAGE_SIZE = 20;
@@ -70,6 +71,7 @@ export default async function ExplorePage({
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <BackButton />
       <h1 className="font-sans font-semibold text-dream-bright text-sm">Explore Dreams</h1>
 
       {/* Search */}

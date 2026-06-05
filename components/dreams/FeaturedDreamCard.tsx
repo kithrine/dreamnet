@@ -7,6 +7,7 @@ type FeaturedDreamProps = {
     title: string;
     content: string;
     averageRating: number;
+    coverImage: string;
     user: { username: string };
     tags: { tag: { name: string } }[];
     _count: { comments: number };
@@ -20,19 +21,13 @@ export default function FeaturedDreamCard({ dream }: FeaturedDreamProps) {
     <Link href={`/dreams/${dream.id}`} className="block group">
       <div className="dream-card-gold p-5 hover:border-dream-gold/50 transition-colors">
         <div className="flex gap-6">
-          {/* Illustration placeholder — replaced when images are added */}
-          <div className="w-56 h-48 rounded-xl flex-shrink-0 relative overflow-hidden bg-gradient-to-br from-violet-600 via-dream-purple to-indigo-900">
-            {/* Glow orb */}
-            <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-dream-violet/50 blur-2xl" />
-            {/* Moon */}
-            <div className="absolute top-4 right-6 text-3xl opacity-80">🌙</div>
-            {/* Sparkles */}
-            <div className="absolute top-6  left-6  text-dream-gold/70 text-xs">✦</div>
-            <div className="absolute bottom-8 right-8 text-dream-gold/50 text-base">✦</div>
-            <div className="absolute bottom-4 left-10 text-dream-gold/40 text-xs">✦</div>
-            <div className="absolute top-16 right-4 text-dream-rose/40 text-xs">✦</div>
-            {/* Bottom fade */}
-            <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-indigo-900/80 to-transparent" />
+          {/* Cover image */}
+          <div className="w-56 h-48 rounded-xl flex-shrink-0 overflow-hidden">
+            <img
+              src={`/images/cover-photos/${dream.coverImage}`}
+              alt={dream.title}
+              className="w-full h-full object-cover"
+            />
           </div>
 
           {/* Content */}
@@ -61,8 +56,11 @@ export default function FeaturedDreamCard({ dream }: FeaturedDreamProps) {
                 <span className="font-sans text-dream-gold text-sm font-semibold">
                   ★ {dream.averageRating.toFixed(1)}
                 </span>
-                <span className="font-sans text-dream-muted text-sm">
-                  💬 {dream._count.comments}
+                <span className="font-sans text-dream-muted text-sm flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                  </svg>
+                  {dream._count.comments}
                 </span>
               </div>
             </div>

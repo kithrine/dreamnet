@@ -3,6 +3,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import BackButton from "@/components/ui/BackButton";
 import { NotificationType } from "@prisma/client";
 
 function notificationMessage(type: NotificationType, username: string | null, dreamTitle?: string) {
@@ -42,14 +43,19 @@ export default async function ActivityPage() {
 
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-6">
+      <BackButton />
       <h1 className="font-sans font-semibold text-dream-bright text-sm">Activity</h1>
       <div className="space-y-3">
         {notifications.map((n) => {
           const triggerUsername = n.relatedUserId ? userMap[n.relatedUserId] : null;
           return (
             <div key={n.id} className={`dream-card p-4 flex items-start gap-3 ${!n.read ? "border-dream-violet" : ""}`}>
-              <span className="text-xl mt-0.5">
-                {n.type === "RATING_RECEIVED" ? "★" : n.type === "COMMENT_ON_DREAM" ? "💬" : "↩️"}
+              <span className="text-xl mt-0.5 flex-shrink-0">
+                {n.type === "RATING_RECEIVED" ? "★" : n.type === "COMMENT_ON_DREAM" ? (
+                  <svg className="w-5 h-5 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.75}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                  </svg>
+                ) : "↩️"}
               </span>
               <div>
                 <p className="font-sans text-dream-text text-sm">
