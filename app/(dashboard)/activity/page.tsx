@@ -3,6 +3,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import BackButton from "@/components/ui/BackButton";
 import { NotificationType } from "@prisma/client";
 
 function notificationMessage(type: NotificationType, username: string | null, dreamTitle?: string) {
@@ -42,6 +43,7 @@ export default async function ActivityPage() {
 
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-6">
+      <BackButton />
       <h1 className="font-sans font-semibold text-dream-bright text-sm">Activity</h1>
       <div className="space-y-3">
         {notifications.map((n) => {

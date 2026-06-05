@@ -8,7 +8,6 @@ import DreamCard from "@/components/dreams/DreamCard";
 import TrendingTags from "@/components/dashboard/TrendingTags";
 import TopDreamers from "@/components/dashboard/TopDreamers";
 import RecentActivity from "@/components/dashboard/RecentActivity";
-import TopBar from "@/components/layout/TopBar";
 import Link from "next/link";
 
 export default async function DashboardPage() {
@@ -21,9 +20,7 @@ export default async function DashboardPage() {
   ]);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <TopBar />
-
+    <div>
       {/* Main content */}
       <div className="flex gap-6 p-6 max-w-6xl mx-auto w-full">
         <div className="flex-1 space-y-8 min-w-0">
@@ -106,3 +103,4 @@ export default async function DashboardPage() {
     </div>
   );
 }
+

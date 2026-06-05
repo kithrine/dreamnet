@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import TagChip from "@/components/ui/TagChip";
+import BackButton from "@/components/ui/BackButton";
 import RatingSection from "./RatingSection";
 import CommentSection from "./CommentSection";
 import Link from "next/link";
@@ -53,6 +54,7 @@ export default async function DreamDetailPage({ params }: { params: Promise<{ id
 
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-8">
+      <BackButton />
       {/* Cover image hero */}
       <div className="w-full h-56 rounded-2xl overflow-hidden">
         <img
