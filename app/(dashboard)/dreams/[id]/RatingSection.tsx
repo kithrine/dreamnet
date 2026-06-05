@@ -7,15 +7,19 @@ import { rateDreamAction } from "./actions";
 interface RatingSectionProps {
   dreamId: string;
   canRate: boolean;
+  isOwner: boolean;
   existingRating?: number;
 }
 
-export default function RatingSection({ dreamId, canRate, existingRating }: RatingSectionProps) {
+export default function RatingSection({ dreamId, canRate, isOwner, existingRating }: RatingSectionProps) {
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [currentRating, setCurrentRating] = useState<number | undefined>(existingRating);
 
   if (!canRate) {
+    // Owner viewing their own dream — show nothing
+    if (isOwner) return null;
+    // Not logged in
     return <p className="font-sans text-dream-muted text-sm">Sign in to rate this dream.</p>;
   }
 

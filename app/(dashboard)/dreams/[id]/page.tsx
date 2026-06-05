@@ -117,7 +117,7 @@ export default async function DreamDetailPage({ params }: { params: Promise<{ id
           <span className="font-sans font-medium text-dream-gold text-sm">★ {dream.averageRating.toFixed(1)}</span>
           <span className="font-sans text-dream-muted text-sm">{dream.ratingCount} rating{dream.ratingCount !== 1 ? "s" : ""}</span>
         </div>
-        <RatingSection dreamId={dream.id} canRate={canRate} existingRating={userRating?.value} />
+        <RatingSection dreamId={dream.id} canRate={canRate} isOwner={isOwner} existingRating={userRating?.value} />
       </div>
 
       {/* Comments */}
