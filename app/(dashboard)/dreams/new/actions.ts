@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { awardStars } from "@/lib/stars";
+import { randomCoverImage } from "@/lib/cover-images";
 import { redirect } from "next/navigation";
 
 export async function createDreamAction(_prev: unknown, formData: FormData) {
@@ -27,6 +28,7 @@ export async function createDreamAction(_prev: unknown, formData: FormData) {
       title,
       content,
       userId: session.user.id,
+      coverImage: randomCoverImage(),
       tags: {
         create: await Promise.all(
           tagNames.map(async (name) => {

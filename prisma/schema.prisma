@@ -30,6 +30,7 @@ model Dream {
   userId        String
   averageRating Float    @default(0)
   ratingCount   Int      @default(0)
+  coverImage    String   @default("coverphoto-1.png")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 

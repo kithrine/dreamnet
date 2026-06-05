@@ -1,6 +1,7 @@
 import { PrismaClient, StarReason, NotificationType } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcryptjs";
+import { randomCoverImage } from "../lib/cover-images";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL as string });
 const prisma = new PrismaClient({ adapter });
@@ -42,7 +43,7 @@ async function main() {
   // ─── DREAMS ──────────────────────────────────────────────────────────────
   async function mkDream(title: string, content: string, userId: string, tags: string[]) {
     return prisma.dream.create({
-      data: { title, content, userId, tags: { create: tags.map(n => ({ tagId: t[n] })) } },
+      data: { title, content, userId, coverImage: randomCoverImage(), tags: { create: tags.map(n => ({ tagId: t[n] })) } },
     });
   }
 

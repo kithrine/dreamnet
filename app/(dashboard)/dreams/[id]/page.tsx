@@ -53,6 +53,15 @@ export default async function DreamDetailPage({ params }: { params: Promise<{ id
 
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-8">
+      {/* Cover image hero */}
+      <div className="w-full h-56 rounded-2xl overflow-hidden">
+        <img
+          src={`/images/cover-photos/${dream.coverImage}`}
+          alt={dream.title}
+          className="w-full h-full object-cover"
+        />
+      </div>
+
       {/* Header */}
       <div>
         <h1 className="font-sans text-2xl font-bold text-dream-gold mb-2">{dream.title}</h1>
