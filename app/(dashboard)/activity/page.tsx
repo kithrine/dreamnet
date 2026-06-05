@@ -48,8 +48,12 @@ export default async function ActivityPage() {
           const triggerUsername = n.relatedUserId ? userMap[n.relatedUserId] : null;
           return (
             <div key={n.id} className={`dream-card p-4 flex items-start gap-3 ${!n.read ? "border-dream-violet" : ""}`}>
-              <span className="text-xl mt-0.5">
-                {n.type === "RATING_RECEIVED" ? "★" : n.type === "COMMENT_ON_DREAM" ? "💬" : "↩️"}
+              <span className="text-xl mt-0.5 flex-shrink-0">
+                {n.type === "RATING_RECEIVED" ? "★" : n.type === "COMMENT_ON_DREAM" ? (
+                  <svg className="w-5 h-5 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.75}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                  </svg>
+                ) : "↩️"}
               </span>
               <div>
                 <p className="font-sans text-dream-text text-sm">

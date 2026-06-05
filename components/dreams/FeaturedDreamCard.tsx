@@ -56,8 +56,11 @@ export default function FeaturedDreamCard({ dream }: FeaturedDreamProps) {
                 <span className="font-sans text-dream-gold text-sm font-semibold">
                   ★ {dream.averageRating.toFixed(1)}
                 </span>
-                <span className="font-sans text-dream-muted text-sm">
-                  💬 {dream._count.comments}
+                <span className="font-sans text-dream-muted text-sm flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                  </svg>
+                  {dream._count.comments}
                 </span>
               </div>
             </div>

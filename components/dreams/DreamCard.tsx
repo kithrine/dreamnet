@@ -45,7 +45,12 @@ export default function DreamCard({ dream, rank }: DreamCardProps) {
           <p className="font-sans text-dream-muted text-xs mt-0.5">by {dream.user.username}</p>
           <div className="flex items-center gap-4 mt-2">
             <span className="font-sans text-dream-gold text-xs font-medium">★ {dream.averageRating.toFixed(1)}</span>
-            <span className="font-sans text-dream-muted text-xs">💬 {dream._count.comments}</span>
+            <span className="font-sans text-dream-muted text-xs flex items-center gap-1">
+              <svg className="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+              </svg>
+              {dream._count.comments}
+            </span>
           </div>
         </div>
 
