@@ -645,8 +645,8 @@ function SceneInner({
 }: {
   avatarKey: string;
   color: number;
-  bubbles: { bubble: DreamBubble; position: [number, number, number] }[];
-  onPop: (b: DreamBubble) => void;
+  bubbles: { uid: number; bubble: DreamBubble; position: [number, number, number] }[];
+  onPop: (uid: number, b: DreamBubble) => void;
   draggingRef: React.MutableRefObject<boolean>;
 }) {
   const { camera, gl, scene } = useThree();
@@ -697,13 +697,14 @@ function SceneInner({
 
   // Called by a bubble when clicked: fire the star stream from the wand to the bubble,
   // then (when the stream arrives) burst particles and open the rating panel via onPop.
-  const requestPop = (b: DreamBubble, worldPos: THREE.Vector3) => {
+  // We carry the bubble's unique uid so the right instance is removed (dreams can repeat).
+  const requestPop = (uid: number, b: DreamBubble, worldPos: THREE.Vector3) => {
     const from = wandTipWorld();
     if (effects.current) {
-      effects.current.fire(from, worldPos, b.tint, () => onPop(b));
+      effects.current.fire(from, worldPos, b.tint, () => onPop(uid, b));
     } else {
       // effects not ready (shouldn't happen) — fall back to popping immediately
-      onPop(b);
+      onPop(uid, b);
     }
   };
 
@@ -849,8 +850,8 @@ function SceneInner({
       <Effects handleRef={effects} />
 
       {/* dream bubbles — clicking one fires the star stream, then pops + rates */}
-      {bubbles.map((b, i) => (
-        <Bubble key={b.bubble.dream.id + ":" + i} bubble={b.bubble} position={b.position} onRequestPop={requestPop} />
+      {bubbles.map((b) => (
+        <Bubble key={b.uid} bubble={b.bubble} position={b.position} onRequestPop={(bb, wp) => requestPop(b.uid, bb, wp)} />
       ))}
     </>
   );
@@ -979,7 +980,9 @@ export default function DreamWorld({
   onExit: () => void;
 }) {
   // Active dream bubbles with their world positions.
-  const [bubbles, setBubbles] = useState<{ bubble: DreamBubble; position: [number, number, number] }[]>([]);
+  const [bubbles, setBubbles] = useState<{ uid: number; bubble: DreamBubble; position: [number, number, number] }[]>([]);
+  // monotonically increasing id so every bubble instance is unique (dreams can repeat)
+  const nextUid = useRef(0);
   // The dream currently being rated (panel open) + any notice (already rated, etc.).
   const [activeDream, setActiveDream] = useState<GameDream | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -1007,22 +1010,41 @@ export default function DreamWorld({
   }, []);
 
   // Fetch dreams from the REAL random route to fill up to ~10 bubbles.
+  // Top the world up to TARGET bubbles by fetching random dreams. Uses the live
+  // bubble count (read inside the functional updater) so repeated calls always refill
+  // correctly — 10 on screen, and back up to 10 as they're popped.
+  const TARGET_BUBBLES = 10;
   const fillBubbles = useCallback(async () => {
-    const target = 10;
-    let guard = 0; // avoid infinite loops if the pool is tiny
-    const next = [...bubbles];
-    while (next.length < target && guard < 30) {
+    // how many we still need right now (read from the latest state, not a stale closure)
+    let current = 0;
+    setBubbles((prev) => {
+      current = prev.length;
+      return prev; // no change yet — just reading the live count
+    });
+    // fetch enough fresh, non-duplicate dreams to reach the target
+    const fresh: { uid: number; bubble: DreamBubble; position: [number, number, number] }[] = [];
+    let guard = 0; // avoid infinite loops if the dream pool is small
+    let misses = 0; // consecutive duplicates — signals the pool is exhausted
+    while (current + fresh.length < TARGET_BUBBLES && guard < 60) {
       guard++;
       const dream = await fetchRandomDream();
       if (!dream) break; // 401/404/etc — stop trying
-      if (seenIds.current.has(dream.id)) continue; // skip duplicates
+      if (seenIds.current.has(dream.id)) {
+        misses++;
+        // if we keep drawing dreams we've already shown, the pool is exhausted —
+        // clear the "seen" set so dreams can be reused and the world stays full
+        if (misses > 12) seenIds.current.clear();
+        continue;
+      }
+      misses = 0;
       seenIds.current.add(dream.id);
       const tint = DREAM_TINTS[Math.floor(Math.random() * DREAM_TINTS.length)];
-      next.push({ bubble: { dream, tint }, position: placeBubble() });
+      fresh.push({ uid: nextUid.current++, bubble: { dream, tint }, position: placeBubble() });
     }
-    setBubbles(next);
+    // append the fresh bubbles to whatever is currently on screen
+    if (fresh.length > 0) setBubbles((prev) => [...prev, ...fresh]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bubbles, placeBubble]);
+  }, [placeBubble]);
 
   // Initial fill on mount.
   useEffect(() => {
@@ -1039,9 +1061,9 @@ export default function DreamWorld({
   // Called AFTER the star stream arrives and the bubble bursts (see Effects.fire).
   // The sounds (fire + pop) and the visual burst are handled inside the effect; here we
   // just remove the popped bubble from the world and open its rating panel.
-  const handlePop = useCallback((b: DreamBubble) => {
-    // remove the popped bubble from the scene
-    setBubbles((prev) => prev.filter((x) => x.bubble.dream.id !== b.dream.id));
+  const handlePop = useCallback((uid: number, b: DreamBubble) => {
+    // remove the EXACT popped bubble instance (by uid, so repeated dreams are safe)
+    setBubbles((prev) => prev.filter((x) => x.uid !== uid));
     setNotice(null);
     setActiveDream(b.dream);
   }, []);
@@ -1137,9 +1159,9 @@ export default function DreamWorld({
             }}
           >
             <span style={{ width: 14, color: "#9b8ec4" }}>{i + 1}</span>
-            {/* leaderboard shows the home-page pixel avatar id (1-5) */}
+            {/* leaderboard shows just the username (rank number is on the left) */}
             <span style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-              {row.username} <span style={{ color: "#7a6ca8" }}>#{row.avatarId}</span>
+              {row.username}
             </span>
             <span style={{ color: "#ffe066", fontWeight: 700 }}>{row.count}</span>
           </div>
@@ -1157,7 +1179,7 @@ export default function DreamWorld({
             setActiveDream(null);
             setNotice(null);
             // if the world is getting empty, top it up
-            if (bubbles.length < 3) void fillBubbles();
+            void fillBubbles(); // always top the world back up to 10
           }}
         />
       )}
