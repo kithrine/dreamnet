@@ -20,13 +20,14 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: CORS_HEADERS });
   }
 
-  const count = await prisma.dream.count();
+  const count = await prisma.dream.count({ where: { archivedAt: null } });
   if (count === 0) {
     return NextResponse.json({ error: "No dreams available" }, { status: 404, headers: CORS_HEADERS });
   }
 
   const skip = Math.floor(Math.random() * count);
   const [dream] = await prisma.dream.findMany({
+    where: { archivedAt: null },
     skip,
     take: 1,
     include: {

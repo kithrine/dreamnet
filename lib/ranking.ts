@@ -12,6 +12,7 @@ export async function getTopDreams(limit = 5) {
   const globalMean = agg._avg.value ?? 3;
 
   const dreams = await prisma.dream.findMany({
+    where: { archivedAt: null },
     include: {
       user: { select: { username: true, avatarId: true } },
       tags: { include: { tag: { select: { name: true } } } },

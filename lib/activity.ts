@@ -11,7 +11,7 @@ export async function getRecentActivity(limit = 5): Promise<ActivityItem[]> {
   const comments = await prisma.comment.findMany({
     take: limit,
     orderBy: { createdAt: "desc" },
-    where: { parentId: null },
+    where: { parentId: null, archivedAt: null },
     include: {
       user: { select: { username: true, avatarId: true } },
       dream: { select: { id: true, title: true } },

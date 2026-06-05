@@ -7,7 +7,7 @@ import Link from "next/link";
 const PAGE_SIZE = 20;
 
 async function searchDreams(q: string, tag: string, sort: string, page: number) {
-  const where: Record<string, unknown> = {};
+  const where: Record<string, unknown> = { archivedAt: null };
   if (q) {
     where.OR = [
       { title: { contains: q, mode: "insensitive" } },
