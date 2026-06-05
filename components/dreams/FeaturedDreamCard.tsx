@@ -1,5 +1,5 @@
 import Link from "next/link";
-import TagChip from "@/components/ui/TagChip";
+import TagBadge from "@/components/ui/TagBadge";
 
 type FeaturedDreamProps = {
   dream: {
@@ -49,7 +49,7 @@ export default function FeaturedDreamCard({ dream }: FeaturedDreamProps) {
             <div>
               <div className="flex flex-wrap gap-1.5 mt-3 mb-3">
                 {dream.tags.slice(0, 4).map(({ tag }) => (
-                  <TagChip key={tag.name} name={tag.name} />
+                  <TagBadge key={tag.name} name={tag.name} />
                 ))}
               </div>
               <div className="flex items-center gap-5">
